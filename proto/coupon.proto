@@ -1,0 +1,70 @@
+syntax = "proto3";
+
+package coupon_proto;
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+
+message Coupon {
+    uint64 id = 1;
+    string name = 2;
+    string code =3;
+    string description = 4;
+
+    enum CouponType {
+        PERCENT = 0;
+        FLAT = 1;
+    }
+    CouponType type = 5;
+   
+    bool status = 6;        
+    google.protobuf.Timestamp time_from = 7;
+    google.protobuf.Timestamp time_to = 8;
+    google.protobuf.Timestamp date_from = 9;
+    google.protobuf.Timestamp date_to = 10;
+
+    enum DayOfWeek {
+        MONDAY = 0;
+        TUESDAY = 1;
+        WEDNESDAY = 2;
+        THURSDAY = 3;
+        FRIDAY = 4;
+        SATURDAY = 5;
+        SUNDAY = 6;
+    }
+    repeated DayOfWeek days = 11;
+    float value = 12;
+    uint64 franchise_id = 13;
+
+}
+
+message CreateCouponRequest{
+    Coupon coupon = 1;
+}
+
+message UpdateCouponRequest{
+    Coupon coupon = 1;
+}
+
+message GetCouponRequest{
+    uint64 id = 1;
+}
+
+message DeleteCouponRequest{
+    uint64 id = 1;
+}
+
+message ListCouponsRequest{
+}
+
+message ListCouponsResponse{
+    repeated Coupon coupons = 1;
+}
+
+service CouponService {
+    rpc CreateCoupon(CreateCouponRequest) returns (Coupon);
+    rpc GetCoupon(GetCouponRequest) returns (Coupon);
+    rpc UpdateCoupon(UpdateCouponRequest) returns (Coupon);
+    rpc DeleteCoupon(DeleteCouponRequest) returns (Empty);
+    rpc ListCoupons(ListCouponsRequest) returns (ListCouponsResponse);
+}
