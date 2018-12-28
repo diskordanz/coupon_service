@@ -21,3 +21,9 @@ CREATE TABLE coupons(
     	franchise_id 	INTEGER,
 	FOREIGN KEY (franchise_id) REFERENCES franchise(id)
 );
+
+INSERT INTO coupons(name,code,type,status,value,franchise_id) 
+	VALUES
+	('Coupon 1','CODE1',0,true,10,1),
+	('Coupon 2','CODE2',1,false,20,1),
+	('Coupon 3','CODE3',1,true,15,1);

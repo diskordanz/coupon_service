@@ -45,7 +45,7 @@ func (s CouponService) CreateCoupon(ctx context.Context, req *pb.CreateCouponReq
 }
 
 func (s CouponService) UpdateCoupon(ctx context.Context, req *pb.UpdateCouponRequest) (*pb.Coupon, error) {
-	err := s.DB.Model(req.Coupon).Column("name","code","description","type","status","time_from","time_to","date_from","date_to","days","value","franchise_id").Update()
+	err := s.DB.Update(&req.Coupon)
 	if err != nil {
 		return nil, err
 	}
@@ -61,17 +61,17 @@ func (s CouponService) DeleteCoupon(ctx context.Context, req *pb.DeleteCouponReq
 }
 
 func main() {
-	lis, err := net.Listen("tcp", ":50051")
+	lis, err := net.Listen("tcp", "localhost:50051")
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
 	s := grpc.NewServer()
 
 	db := pg.Connect(&pg.Options{
-		User:     "postgres",
-		Password: "postgres",
-		Database: "coupons_db",
-		Addr:     "5555:5555",
+		User:     "postgres_user",
+		Password: "password",
+		Database: "coupons2_db",
+		Addr:     "localhost:5432",
 		RetryStatementTimeout: true,
 		MaxRetries:            4,
 		MinRetryBackoff:       250 * time.Millisecond,
