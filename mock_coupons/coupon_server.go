@@ -1,4 +1,4 @@
-package main
+package coup
 
 import (
 	"context"
@@ -10,7 +10,9 @@ import (
 	"github.com/go-pg/pg" 
 	"github.com/golang/protobuf/ptypes/empty"
 	pb "github.com/diskordanz/coupon_service/proto"
-)
+	"os"
+
+) 
 
 type CouponService struct{
 	DB *pg.DB
@@ -60,8 +62,25 @@ func (s CouponService) DeleteCoupon(ctx context.Context, req *pb.DeleteCouponReq
 	return &empty.Empty{}, nil
 }
 
-func main() {
-	lis, err := net.Listen("tcp", "localhost:50051")
+func (s CouponService) ListCouponsByFranchise(ctx context.Context, req *pb.ListCouponsByFranchiseRequest) (*pb.ListCouponsResponse, error) {
+	var coupons []*pb.Coupon
+	err:=s.DB.Model(&coupons).Select()
+	if err != nil {
+		return nil, err
+	}
+
+	return &pb.ListCouponsResponse{Coupons: coupons}, nil
+}
+
+//func main() {
+	var err error
+	var lis net.Listener
+	if port := os.Getenv("COUPON_SERVICE_ADDRESS"); port != ""{
+		lis, err = net.Listen("tcp", port)
+	} else {
+		lis, err = net.Listen("tcp", "50051")
+	}
+	
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}

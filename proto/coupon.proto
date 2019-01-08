@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package coupon_proto;
+package coupon;
 
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/empty.proto";
@@ -55,16 +55,23 @@ message DeleteCouponRequest{
 }
 
 message ListCouponsRequest{
+    string filter = 1;
 }
 
 message ListCouponsResponse{
     repeated Coupon coupons = 1;
 }
 
+message ListCouponsByFranchiseRequest{
+    uint64 id = 1;
+    string filter = 2;
+}
+
 service CouponService {
     rpc CreateCoupon(CreateCouponRequest) returns (Coupon);
     rpc GetCoupon(GetCouponRequest) returns (Coupon);
     rpc UpdateCoupon(UpdateCouponRequest) returns (Coupon);
-    rpc DeleteCoupon(DeleteCouponRequest) returns (Empty);
+    rpc DeleteCoupon(DeleteCouponRequest) returns (google.protobuf.Empty);
     rpc ListCoupons(ListCouponsRequest) returns (ListCouponsResponse);
+    rpc ListCouponsByFranchise(ListCouponsByFranchiseRequest)returns(ListCouponsResponse);
 }

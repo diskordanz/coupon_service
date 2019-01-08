@@ -20,26 +20,31 @@ func main() {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
 	defer cancel()
 
-	coupon:=pb.Coupon{
-		Name:"coupon 2",
-		Code: "CODE",
-		Description: "",
-		Type: 1,
-		Status: true,
-		Value: 10.0,
-		FranchiseId:1 }
-
-	request, err := client.CreateCoupon(ctx, &pb.CreateCouponRequest{Coupon:&coupon})
-	if err != nil {
-		log.Fatalf("could not create coupon: %v", err)
+	// request, err := client.ListCoupons(ctx, &pb.ListCouponsRequest{})
+	// if err != nil {
+	// 	log.Fatalf("could not get coupon: %v", err)
+	// }else{
+	// for _, c := range request.Coupons {
+	// 	log.Println(c)
+	// } 
+	// }
+	
+	coup:= pb.Coupon{
+		Name: "TestCoupon", 
+		Code: "TestCODE",
+		Description: "some info",
+		Status: false,
+		//Days: []pb.Coupon_DayOfWeek{1,5,6},
+		Value: 30.0,
+		FranchiseId: 2,
 	}
-	log.Printf("New coupon: %s", request)
- 
-	request2, err := client.ListCoupons(ctx, &pb.ListCouponsRequest{})
-	if err != nil {
-		log.Fatalf("could not get coupons list: %v", err)
-	}
-	log.Printf("All coupons: %s", request2)
+	log.Println(coup)
 
+	request2, err := client.CreateCoupon(ctx, &pb.CreateCouponRequest{Coupon: &coup})
+	if err != nil {
+		log.Fatalf("could not crete coupon: %v", err)
+	}
+	log.Println(request2)
+	
 
 }
