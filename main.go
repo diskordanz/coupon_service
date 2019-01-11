@@ -6,6 +6,7 @@ import (
 	"log"
 	"net"
 	"os"
+	//"time"
 
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
@@ -19,12 +20,13 @@ import (
  
 
 func main() {
+	//time.Sleep(5*time.Second)
 	var err error
 	var lis net.Listener
 	if port := os.Getenv("COUPON_SERVICE_ADDRESS"); port != "" {
 		lis, err = net.Listen("tcp", port)
 	} else {
-		lis, err = net.Listen("tcp", "localhost:50051")
+		lis, err = net.Listen("tcp", "localhost:50052")
 	}
 
 	if err != nil {
@@ -32,7 +34,7 @@ func main() {
 	}
 	s := grpc.NewServer()
 
-	db, err := gorm.Open("postgres", "host=localhost port=5432 user=postgres_user dbname=coupons3_db sslmode=disable password=password")
+	db, err := gorm.Open("postgres", "host=localhost port=5432 user=postgres dbname=coupons3_db sslmode=disable password=postgres")
 
 	if err != nil {
 		log.Fatal(err)
@@ -42,5 +44,5 @@ func main() {
 
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)
-	}
+	} 
 }

@@ -4,7 +4,7 @@ import(
 	"context"
 	pb "github.com/diskordanz/coupon_service/proto"
 	"github.com/golang/protobuf/ptypes/empty"
-
+	"log"
 )
 
 type IRepository interface{
@@ -29,6 +29,7 @@ func (s *CouponService) CreateCoupon(ctx context.Context, req *pb.CreateCouponRe
 
 func (s *CouponService) GetCoupon(ctx context.Context, req *pb.GetCouponRequest) (*pb.Coupon, error) {
 	res, err := s.Repo.GetCoupon(req); if err != nil {
+		log.Fatalf("Error with GetCoupon in repository.go: %v", err)
 		return nil, err
 	}
 	return res, nil
@@ -36,6 +37,7 @@ func (s *CouponService) GetCoupon(ctx context.Context, req *pb.GetCouponRequest)
  
 func (s *CouponService) ListCoupons(ctx context.Context, req *pb.ListCouponsRequest) (*pb.ListCouponsResponse, error) {
 	res, err := s.Repo.ListCoupons(req); if err != nil {
+		log.Fatalf("Error with ListCoupons in repository.go: %v", err)
 		return nil, err
 	}
 	return res, nil
