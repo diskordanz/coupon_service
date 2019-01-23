@@ -1,27 +1,22 @@
-package repository
+package service
 
 import(
 	"context"
 	pb "github.com/diskordanz/coupon_service/proto"
+	"github.com/diskordanz/coupon_service/data"
 	"github.com/golang/protobuf/ptypes/empty"
 	"log"
 )
 
-type IRepository interface{
-	CreateCoupon(*pb.CreateCouponRequest) (*pb.Coupon, error)
-    GetCoupon(*pb.GetCouponRequest) (*pb.Coupon, error)
-    UpdateCoupon(*pb.UpdateCouponRequest) (*pb.Coupon, error)
-    DeleteCoupon(*pb.DeleteCouponRequest) error
-    ListCoupons(*pb.ListCouponsRequest) (*pb.ListCouponsResponse, error)
-    ListCouponsByFranchise(*pb.ListCouponsByFranchiseRequest)(*pb.ListCouponsResponse, error)
-}
-
 type CouponService struct {
-	Repo IRepository
+	Repo data.Repository
 }
 
 func (s *CouponService) CreateCoupon(ctx context.Context, req *pb.CreateCouponRequest) (*pb.Coupon, error) {
 	res, err := s.Repo.CreateCoupon(req); if err != nil {
+		
+		log.Println("no-no")
+
 		return nil, err
 	}
 	return res, nil
@@ -29,7 +24,6 @@ func (s *CouponService) CreateCoupon(ctx context.Context, req *pb.CreateCouponRe
 
 func (s *CouponService) GetCoupon(ctx context.Context, req *pb.GetCouponRequest) (*pb.Coupon, error) {
 	res, err := s.Repo.GetCoupon(req); if err != nil {
-		log.Fatalf("Error with GetCoupon in repository.go: %v", err)
 		return nil, err
 	}
 	return res, nil
@@ -37,7 +31,6 @@ func (s *CouponService) GetCoupon(ctx context.Context, req *pb.GetCouponRequest)
  
 func (s *CouponService) ListCoupons(ctx context.Context, req *pb.ListCouponsRequest) (*pb.ListCouponsResponse, error) {
 	res, err := s.Repo.ListCoupons(req); if err != nil {
-		log.Fatalf("Error with ListCoupons in repository.go: %v", err)
 		return nil, err
 	}
 	return res, nil

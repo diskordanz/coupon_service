@@ -10,7 +10,7 @@ services:
   svc-coupon:
     image: svc-coupon:latest
     ports:
-    - 9092:9092
+    - 9099:9099
     container_name: svc-coupon
     depends_on:
     - db

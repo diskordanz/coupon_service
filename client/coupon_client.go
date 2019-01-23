@@ -6,11 +6,13 @@ import (
 	"log"
 	"google.golang.org/grpc"
 	pb "github.com/diskordanz/coupon_service/proto"
+	//"github.com/golang/protobuf/ptypes/wrappers"
+
 
 )
 
 func main() {
-	conn, err := grpc.Dial("localhost:50052", grpc.WithInsecure())
+	conn, err := grpc.Dial("localhost:9097", grpc.WithInsecure())
 	if err != nil {
 		log.Fatalf("did not connect: %v", err)
 	}
@@ -20,27 +22,49 @@ func main() {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
 	defer cancel()
 
-	request, err := client.GetCoupon(ctx, &pb.GetCouponRequest{Id:1})
-	if err != nil {
-		log.Fatalf("could not get coupons: %v", err)
-	 }
-	 log.Println(request)
-	// coup:= pb.Coupon{
-	// 	Name: "TestCoupon", 
-	// 	Code: "TestCODE",
-	// 	Description: "some info",
-	// 	Status: false,
-	// 	//Days: []pb.Coupon_DayOfWeek{1,5,6},
-	// 	Value: 30.0,
-	// 	FranchiseId: 2,
-	// }
-	// log.Println(coup)
-
-	// request2, err := client.CreateCoupon(ctx, &pb.CreateCouponRequest{Coupon: &coup})
-	// if err != nil {
-	// 	log.Fatalf("could not crete coupon: %v", err)
-	// }
-	// log.Println(request2)
 	
 
+	// coup:= pb.Coupon{
+	//   	Name: &wrappers.StringValue{ Value: "TestCoupon"}, 
+	//   	Code: &wrappers.StringValue{ Value: "TestCODE"},
+	//   	Description: &wrappers.StringValue{ Value: "some info"},
+	// 	Type: 0,  
+	// 	Status: &wrappers.BoolValue{ Value: true},
+	// 	TimeFrom: &pb.TimeOfDay{
+	// 		Hours: &wrappers.UInt32Value{ Value: 13},
+	// 		Minutes: &wrappers.UInt32Value{ Value:  1},
+	// 	},
+	// 	TimeTo: &pb.TimeOfDay{
+	// 		Hours: &wrappers.UInt32Value{ Value: 13},
+	// 		Minutes: &wrappers.UInt32Value{ Value: 59},
+	// 	},
+	// 	DateFrom: &pb.Date{
+	// 		Year: &wrappers.UInt32Value{ Value: 2019},
+	// 		Month: &wrappers.UInt32Value{ Value: 2},
+	// 		Day:&wrappers.UInt32Value{ Value: 1},
+	// 	},
+	// 	DateTo: &pb.Date{
+	// 		Year: &wrappers.UInt32Value{ Value: 2019},
+	// 		Month: &wrappers.UInt32Value{ Value: 5},
+	// 		Day:&wrappers.UInt32Value{ Value: 30},
+	// 	},
+	//   	Days: []pb.Coupon_DayOfWeek{1,2,3,4,5,6,7},
+	//   	Value: &wrappers.FloatValue{ Value: 10.0},
+	//   	FranchiseId: &wrappers.UInt64Value{ Value: 1},
+	//  }
+
+	//  _,err = client.CreateCoupon(ctx, &pb.CreateCouponRequest{Coupon: &coup})
+	//  if err != nil {
+	// 	log.Fatalf("could not crete coupon: %v", err)
+	//  }
+	
+
+	 
+	 res, err := client.ListCoupons(ctx, &pb.ListCouponsRequest{})
+	 if err != nil {
+		 log.Fatalf("could not get coupons: %v", err)
+	 }
+	 for _,k := range res.Coupons {
+		 log.Println(k)
+	 }
 }

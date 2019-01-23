@@ -1,41 +1,55 @@
 syntax = "proto3";
 
+import "google/protobuf/empty.proto";
+import "google/protobuf/wrappers.proto";
+
+
 package coupon;
 
-import "google/protobuf/timestamp.proto";
-import "google/protobuf/empty.proto";
-
 message Coupon {
-    uint64 id = 1;
-    string name = 2;
-    string code =3;
-    string description = 4;
+    google.protobuf.UInt64Value id = 1;
+    google.protobuf.StringValue name = 2;
+    google.protobuf.StringValue code =3;
+    google.protobuf.StringValue description = 4;
 
     enum CouponType {
-        PERCENT = 0;
-        FLAT = 1;
+        UNDEFINED = 0;
+        PERCENT = 1;
+        FLAT = 2;
     }
+
     CouponType type = 5;
    
-    bool status = 6;        
-    google.protobuf.Timestamp time_from = 7;
-    google.protobuf.Timestamp time_to = 8;
-    google.protobuf.Timestamp date_from = 9;
-    google.protobuf.Timestamp date_to = 10;
-
+    google.protobuf.BoolValue status = 6;        
+    TimeOfDay time_from = 7;
+    TimeOfDay time_to = 8;
+    Date date_from = 9; 
+    Date date_to = 10;
+    google.protobuf.FloatValue value = 11;
+    google.protobuf.UInt64Value franchise_id = 12;
+    
     enum DayOfWeek {
-        MONDAY = 0;
-        TUESDAY = 1;
-        WEDNESDAY = 2;
-        THURSDAY = 3;
-        FRIDAY = 4;
-        SATURDAY = 5;
-        SUNDAY = 6;
+        DAY_OF_WEEK_UNSPECIFIED = 0;
+        MONDAY = 1;
+        TUESDAY = 2;
+        WEDNESDAY = 3;
+        THURSDAY = 4;
+        FRIDAY = 5;
+        SATURDAY = 6;
+        SUNDAY = 7;
     }
-    repeated DayOfWeek days = 11;
-    float value = 12;
-    uint64 franchise_id = 13;
+    repeated DayOfWeek days = 13;
+}
 
+message Date {
+    google.protobuf.UInt32Value year = 1;
+    google.protobuf.UInt32Value month = 2;
+    google.protobuf.UInt32Value day = 3;
+}
+
+message TimeOfDay {
+    google.protobuf.UInt32Value hours = 1;
+    google.protobuf.UInt32Value minutes = 2;
 }
 
 message CreateCouponRequest{
@@ -47,15 +61,15 @@ message UpdateCouponRequest{
 }
 
 message GetCouponRequest{
-    uint64 id = 1;
+    google.protobuf.UInt64Value id = 1;
 }
 
 message DeleteCouponRequest{
-    uint64 id = 1;
+    google.protobuf.UInt64Value id = 1;
 }
 
 message ListCouponsRequest{
-    string filter = 1;
+    google.protobuf.StringValue filter = 1;
 }
 
 message ListCouponsResponse{
@@ -63,15 +77,27 @@ message ListCouponsResponse{
 }
 
 message ListCouponsByFranchiseRequest{
-    uint64 id = 1;
-    string filter = 2;
+    google.protobuf.UInt64Value id = 1;
+    google.protobuf.StringValue filter = 2;
 }
 
 service CouponService {
-    rpc CreateCoupon(CreateCouponRequest) returns (Coupon);
-    rpc GetCoupon(GetCouponRequest) returns (Coupon);
-    rpc UpdateCoupon(UpdateCouponRequest) returns (Coupon);
-    rpc DeleteCoupon(DeleteCouponRequest) returns (google.protobuf.Empty);
-    rpc ListCoupons(ListCouponsRequest) returns (ListCouponsResponse);
-    rpc ListCouponsByFranchise(ListCouponsByFranchiseRequest)returns(ListCouponsResponse);
+    rpc CreateCoupon(CreateCouponRequest) returns (Coupon){
+
+    }
+    rpc GetCoupon(GetCouponRequest) returns (Coupon){
+
+    }
+    rpc UpdateCoupon(UpdateCouponRequest) returns (Coupon){
+
+    }
+    rpc DeleteCoupon(DeleteCouponRequest) returns (google.protobuf.Empty){
+    
+    }
+    rpc ListCoupons(ListCouponsRequest) returns (ListCouponsResponse){
+
+    }
+    rpc ListCouponsByFranchise(ListCouponsByFranchiseRequest)returns(ListCouponsResponse){
+
+    }
 }

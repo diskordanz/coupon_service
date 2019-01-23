@@ -4,5 +4,5 @@ RUN mkdir -p /app
 WORKDIR /app
 
 ADD svc-coupon /app
-EXPOSE 9092
+EXPOSE 9099
 CMD ["./svc-coupon"]
